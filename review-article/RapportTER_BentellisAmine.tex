@@ -1,0 +1,87 @@
+\documentclass{article}
+\usepackage[latin1]{inputenc}
+\usepackage[francais]{babel}
+
+\title{Optimisation multiobjectif pour l'ordonnancement}
+\author{Bentellis Amine  \\
+	Université Nice Sophia-Antipolis  \\
+	}
+
+\date{16 Juin, 2020}
+% Hint: \title{what ever}, \author{who care} and \date{when ever} could stand 
+% before or after the \begin{document} command 
+% BUT the \maketitle command MUST come AFTER the \begin{document} command! 
+\begin{document}
+
+\maketitle
+
+
+\begin{abstract}
+TODO
+\end{abstract}
+
+\section{Introduction}
+
+  Les problèmes d'ordonan
+
+
+\section{Présentation du problème PERT/CPM} \label{pertcpm}
+
+\qquad Le problème PERT est très étudié et documenté cependant il est essentiel de le rappeler pour comprendre l’intégralité de ce travail. Tout d’abord PERT est une technique en gestion de projet qui permet de décrire et d’analyser les tâches d’un projet. Grâce à cette méthode il est possible de suivre de manière logique le réseau de travaux à réaliser. Le problème est représenté par un graphe de tâches et ainsi dégagé un planning précis des tâches à effectuer. Pour chaque tâche ou noeud, sont indiquées une date de début et de fin au plus tôt et au plus tard. Par ailleurs du diagramme il est possible de déterminer le chemin critique et spécifier la durée minimale du projet. Le but est d’obtenir une ordonnance des tâches optimale pour minimiser la durée du projet.
+
+\noindent
+Soit un graphe G de tâches. Chaque tâche t contient:
+\begin{itemize}
+\item \textit{\textbf{d}} la durée estimée de la tâche
+\item \textit{\textbf{ES}} date de début au plus tôt
+\item \textit{\textbf{EF}} date de fin au plus tôt
+\item \textit{\textbf{LS}} date de début au plus tard
+\item \textit{\textbf {LF}} date de fin au plus tard
+\item \textit{\textbf {slack}} la marge qui correspond à LF - EF 
+\end{itemize}
+
+Pour avoir une solution optimale qui satisfait le problème il faut commencer par créer le diagramme. Il y a deux types de diagrammes soit AOA (activity on arrow, en francais: activités sur les arcs) ou AON(activity on node, en francais : activités sur les noeuds). AON est plus simple à comprendre et implémenter. En programmation linéaire, on peut attribuer à chaque activité une variable  $v_i, \ i \in [1,n]$. Puis la fonction objectif est :
+\begin{itemize}
+
+\item[] $minimize \ EF(v_n) - EF(v_1)$
+
+\end{itemize}
+
+\newline
+Ici on minimise la durée du projet car cette soustraction correspond à la durée totale du projet (v1 première tâche, vn dernière tâche). Cependant il faut être sur que les contraintes sont bien définis. Pour chaque tâches $v_j$ précédé par une tâche $v_i$ il faut que: 
+\begin{itemize}
+
+\item[] $ES[v_j] - ES[v_i]\  \geq \  d(v_i)$
+\item[] Et: $EF = ES + d$
+
+\end{itemize}
+
+Chaque tâches $v_j$ doit se produire après chaque tâches précédente $v_i$ par au moins la durée de $v_i$ . Mais aussi on précise que la date de fin au plus tôt correspond simplement à la date de début plus sa durée d. En implémentant ces deux contraintes on a un diagramme PERT avec les dates au plus tôt de fin de projet. Cette étape s’appelle le forward pass et est essentiel pour calculer les deux autres variables de décisions LS et LF. La seconde étape s’appelle le backward pass. En programmation linéaire, il suffit d’ajouter les contraintes suivantes:
+
+\begin{itemize}
+
+\item[] $LS = LF - d$
+\item[] Et: $LF(vi) = min(LS(n) , \ n \in Adj $ liste d'adjacence de $v_i$)
+
+
+\end{itemize}
+La première contrainte permet d’assurer que la date de début au plus tard correspond simplement à la date de fin au plus tard moins sa durée d. Et enfin la dernière contrainte sélectionne le minimum de LS parmi les noeuds adjacents pour déterminer la date de fin au plus tard. 
+
+On peut en déduire la marge que chaque tâche possède pour être fini en soustrayant la date de fin au plus tard avec celle au plus tôt.
+
+\begin{itemize}
+\item[] $slack = LF - EF$
+\end{itemize}
+
+Finalement, la dernière étape est de déterminer le chemin critique autrement dit CPM. Avec le diagramme PERT fait cette étape est très simple. Il suffit de choisir les noeuds avec un slack égal à zéro. CPM détermine le plus long chemin du début vers la fin du projet. Ce processus détermine quelles activités sont "critiques" (c'est-à-dire sur le chemin le plus long) et lesquelles ont une "marge positive" (c'est-à-dire qu'elles peuvent être retardées sans changer la durée du projet). Le fait de retarder une des tâche sur le chemin critique entraine forcément un retard sur le projet entier.
+ 
+
+
+
+
+\section{Conclusions \& Discussion}\label{conclusions}
+
+
+\begin{thebibliography}\end{thebibliography}
+
+\end{document}
