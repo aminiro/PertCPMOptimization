@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="ASCII"?><project>
 	<version>1.0</version>
 	<configs>
-		<config default="true" name="Configuration 1" category="opl">
+		<config default="false" name="MediumConfiguration" category="opl">
+			<ref name="MediumGraph.dat" type="data">
+			</ref>
 			<ref name="PertCPMOptimization.mod" type="model">
 			</ref>
 			<ref name="PertCPMOptimization.ops" type="setting">
 			</ref>
-			<ref name="PertCPMOptimization.dat" type="data">
+		</config>
+		<config default="false" name="ExampleConfiguration" category="opl">
+			<ref name="PertCPMOptimization.mod" type="model">
+			</ref>
+			<ref name="ExampleGraph.dat" type="data">
+			</ref>
+			<ref name="PertCPMOptimization.ops" type="setting">
+			</ref>
+		</config>
+		<config default="false" name="LargeConfiguration" category="opl">
+			<ref name="LargeGraph.dat" type="data">
+			</ref>
+			<ref name="PertCPMOptimization.mod" type="model">
+			</ref>
+			<ref name="PertCPMOptimization.ops" type="setting">
+			</ref>
+		</config>
+		<config default="false" name="Main" category="opl">
+			<ref name="RunConfigurations.mod" type="model">
+			</ref>
+		</config>
+		<config default="true" name="Configuration 1" category="opl">
+			<ref name="leximin.dat" type="data">
 			</ref>
 		</config>
 	</configs>
