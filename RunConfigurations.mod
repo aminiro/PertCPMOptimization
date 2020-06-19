@@ -51,8 +51,8 @@ function ascending(u,v){
  }  
  //Cette fonction détermine si toutes les équipes ont le même slack
  function hasSameSlack(){ 
- 	 for(var i=1 ; i<rc1.oplModel.nbteams;i++){
- 	 	if(sumVector(i) !=sumVector(i+1));
+ 	 for(var i=0 ; i<rc1.oplModel.nbteams-1;i++){
+ 	 	if(sumVector(i) != sumVector(i+1))
  	 		return 0
   		} 	 
   	return 1	
@@ -142,7 +142,6 @@ function ascending(u,v){
    
    }
    
-    
    f.writeln(""+ bestNonSortedSolution.join())
    f.close()
    
