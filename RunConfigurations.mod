@@ -49,6 +49,7 @@ function ascending(u,v){
   	} 
   	return sum
  }  
+ //Cette fonction détermine si toutes les équipes ont le même slack
  function hasSameSlack(){ 
  	 for(var i=1 ; i<rc1.oplModel.nbteams;i++){
  	 	if(sumVector(i) !=sumVector(i+1));
@@ -58,13 +59,14 @@ function ascending(u,v){
  } 	
 
 
-
+//premiere configuration qui met en place le réseau PERT
  var rc1 = new IloOplRunConfiguration(
     "PERTCPMOptimization.mod","ExampleGraph.dat");
  rc1.oplModel.generate();
  var best;
   var curr = Infinity;
   var basis = new IloOplCplexBasis();
+  //On cherche ici la meilleure solution (best)
  while ( 1 ) {
     best = curr;
     if ( rc1.cplex.solve() ) {
@@ -76,13 +78,14 @@ function ascending(u,v){
     }
     if ( best==curr ) break;
   }    
- 
+   //fichier de donnée .dat qui sera l'input de la configuration 2
    var f = new IloOplOutputFile();
    f.open("slack0.dat");
    var slackVector = new Array(rc1.oplModel.slack.solutionValue.size);
   	for(var i=0 ; i<rc1.oplModel.slack.solutionValue.size;i++){
     	slackVector[i] = rc1.oplModel.slack.solutionValue[i]
   	} 
+  	//on ecrit dans un fichier .dat la vecteur slack ainsi que sa longueur.
    f.writeln("len="+(rc1.oplModel.slack.solutionValue.size-1)+";")
    f.writeln("slackVector=");
    f.writeln("["+slackVector.join()+"]");
@@ -90,7 +93,7 @@ function ascending(u,v){
    f.close();
    
 
-
+//Configuration 2 calcule de toutes les solutions 
  var rc2 = new IloOplRunConfiguration(
     "LeximinOptimization.mod","slack0.dat");
     var f = new IloOplOutputFile();
@@ -114,16 +117,18 @@ function ascending(u,v){
    currentSolution.sort(ascending);
   	
   	bestSolution = currentSolution;
-  	
+  	//Tant qu'il y a une solution a rc2
    while(rc2.cp.next()){
       
     //compute current solution
     currentSolution = loadNewSolution();
   	currentNonSortedSolution =loadNonSortedSolution();
-  	//is current solution better
+  	//tri non-décroissant
   	currentSolution.sort(ascending);
-  	
-	if(hasSameSlack()==0)continue 	
+  	//toutes les équipes doivent avoir le même slack
+	if(hasSameSlack()==0)continue 
+	
+	//est ce que la solution est meilleure par rapport à l'ordre leximin
     for(var j=0;  j<rc2.oplModel.addedSlack.solutionValue.size;j++){
     	if(currentSolution[j] == bestSolution[j]){
     		continue; 

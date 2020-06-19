@@ -14,6 +14,8 @@ int finish = ...;
 {Edge} adjList =...;
 int nbteams =...;
 int teams[tasks]=...;
+
+//les variables nécessaires pour chaque tache
 dvar int earlyFinish[tasks];
 dvar int earlyStart[tasks];
 
@@ -22,7 +24,7 @@ dvar int latestStart[tasks];
 
 dexpr int slack[t in tasks] =latestStart[t] - earlyStart[t];
 
-
+//fonction objectif : minimiser le temps total du projet
 minimize earlyFinish[finish] - earlyFinish[start];
 subject to {
 	//start et finish n'ont pas vraiment de earlyStart/latestStart/latestFinish 
@@ -46,11 +48,10 @@ subject to {
 	forall(e in adjList )
 	  	latestFinish[e.origin] == min(i in adjList : i.origin == e.origin) latestStart[i.destination];
 	  	
-	//leximin constraint
 	
 }
 execute{
-    
+    //print du chemin critique
 	write("Critical Tasks is ");
 	for(var i in tasks){
 		if (slack[i] == 0 && i != finish && i!=start){

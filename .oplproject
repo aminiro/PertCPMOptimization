@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ASCII"?><project>
 	<version>1.0</version>
 	<configs>
-		<config default="false" name="MediumConfiguration" category="opl">
+		<config default="true" name="MediumConfiguration" category="opl">
 			<ref name="MediumGraph.dat" type="data">
 			</ref>
 			<ref name="PertCPMOptimization.mod" type="model">
@@ -27,10 +27,6 @@
 		</config>
 		<config default="false" name="Main" category="opl">
 			<ref name="RunConfigurations.mod" type="model">
-			</ref>
-		</config>
-		<config default="true" name="Configuration 1" category="opl">
-			<ref name="leximin.dat" type="data">
 			</ref>
 		</config>
 	</configs>
